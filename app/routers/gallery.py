@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List, Optional
 
 from fastapi import (
@@ -15,7 +14,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_session
 from app.core.file_handler import FileHandler
-from app.dto.gallery import GalleryCreateDTO, GalleryResponseDTO, GalleryUpdateDTO
+from app.dto.gallery import GalleryResponseDTO, GalleryUpdateDTO
 from app.services.gallery import GalleryService
 
 router = APIRouter(prefix="/gallery", tags=["gallery"])
@@ -121,8 +120,7 @@ def update_gallery_item(
 def delete_gallery_item(
     item_id: int,
     session: Session = Depends(get_session)
-):
-    
+):  
     
     item = GalleryService.get_gallery_item(session, item_id)
     if not item:

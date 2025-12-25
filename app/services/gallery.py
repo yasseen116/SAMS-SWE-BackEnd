@@ -14,7 +14,7 @@ class GalleryService:
         query = session.query(Gallery)
 
         if featured_only:
-            query = query.filter(Gallery.is_featured == True)
+            query = query.filter(Gallery.is_featured)
 
         query = query.order_by(Gallery.created_at.desc())
         query = query.limit(limit).offset(offset)
@@ -28,7 +28,7 @@ class GalleryService:
     
     @staticmethod
     # Create a new gallery item
-    def create_gallery_item(session:Session, data: dict) -> Gallery:
+    def create_gallery_item(session: Session, data: dict) -> Gallery:
         gallery_item = Gallery(**data)
         session.add(gallery_item)
         session.commit()
