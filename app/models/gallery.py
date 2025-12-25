@@ -1,7 +1,10 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, Index
+from sqlalchemy import Boolean, Column, DateTime, Index, Integer, String, Text
 from sqlalchemy.sql import func
+
 from .base import Base
 
+
+# Gallery model representing a gallery item in the database.
 class Gallery(Base):
     __tablename__ = "gallery"
 

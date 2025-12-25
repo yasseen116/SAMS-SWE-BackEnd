@@ -1,12 +1,7 @@
 """Core configuration and shared utilities."""
-from app.core.database import engine
+from app.core.database import engine, SessionLocal, get_session
+from app.core.config import settings
 from app.models.base import Base
-from app.models.gallery import Gallery
 
-
-def init_db():
-    Base.metadata.create_all(bind=engine)
-    print("Database initialized with all tables.")
-
-if __name__ == "__main__":
-    init_db()
+# Exported symbols
+__all__ = ["engine", "SessionLocal", "get_session", "settings"]

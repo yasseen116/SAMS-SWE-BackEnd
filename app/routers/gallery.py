@@ -1,18 +1,26 @@
-from typing import List, Optional
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, Query, File, UploadFile, Form, status
+from typing import List, Optional
+
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    Query,
+    UploadFile,
+    status,
+)
 from sqlalchemy.orm import Session
+
 from app.core.database import get_session
 from app.core.file_handler import FileHandler
+from app.dto.gallery import GalleryCreateDTO, GalleryResponseDTO, GalleryUpdateDTO
 from app.services.gallery import GalleryService
-from app.dto.gallery import GalleryResponseDTO, GalleryCreateDTO, GalleryUpdateDTO 
-
-
-
 
 router = APIRouter(prefix="/gallery", tags=["gallery"])
 
-
+# List gallery items with optional filtering for featured items
 @router.get("/", response_model=List[GalleryResponseDTO])
 def list_gallery(
     featured_only: bool = Query(False, description="Filter to only featured items"),
@@ -24,6 +32,7 @@ def list_gallery(
     items = GalleryService.list_gallery(session, featured_only, limit, offset)
     return items
 
+# Get a single gallery item by ID
 @router.get("/{item_id}", response_model=GalleryResponseDTO)
 def get_gallery_item(
     item_id: int,
@@ -38,6 +47,7 @@ def get_gallery_item(
         )
     return item
 
+# Create a new gallery item with image upload
 @router.post("/", response_model=GalleryResponseDTO, status_code=status.HTTP_201_CREATED)
 async def create_gallery_item(
     file: UploadFile = File(..., description="Image file"),
@@ -81,6 +91,7 @@ async def create_gallery_item(
             detail=f"Failed to create gallery item: {str(e)}"
         )
 
+# Update an existing gallery item
 @router.put("/{item_id}", response_model=GalleryResponseDTO)
 def update_gallery_item(
     item_id: int,
@@ -105,6 +116,7 @@ def update_gallery_item(
     return item
 
 
+# Delete a gallery item by ID
 @router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_gallery_item(
     item_id: int,

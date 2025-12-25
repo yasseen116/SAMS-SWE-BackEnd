@@ -3,12 +3,14 @@ import uuid
 
 from fastapi import HTTPException, UploadFile
 
+# Define allowed extensions and max file size (5 MB)
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
 MAX_FILE_SIZE = 5 * 1024 * 1024
 
-
+# FileHandler class to manage file operations
 class FileHandler:
     @staticmethod
+    # Validate uploaded image file
     def validate_image(file: UploadFile) -> None:
         if file.filename is None:
             raise HTTPException(
@@ -23,6 +25,7 @@ class FileHandler:
             )
         
     @staticmethod
+    # Save uploaded file and return its URL path
     async def save_upload_file(file: UploadFile, upload_dir: str) -> str:
         FileHandler.validate_image(file)
         if file.filename is None:
@@ -58,6 +61,7 @@ class FileHandler:
         return url_path
     
     @staticmethod
+    # Delete file by its URL path
     def delete_file(file_url: str) -> bool:
         file_path = f"app{file_url}" 
 
